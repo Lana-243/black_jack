@@ -1,9 +1,10 @@
-class Player
+class Dealer
   
-  attr_reader :money
+  attr_reader :money, :cards
   
   def initialize
     @money = 100
+    @cards = []
   end
   
 end
