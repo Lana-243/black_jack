@@ -1,8 +1,11 @@
 require_relative 'dealer'
 require_relative 'deck'
+require_relative 'points'
 require_relative 'player'
 
 class Game
+  
+  include Points
     
   def initialize(player_name)
     @deck = Deck.new
@@ -12,7 +15,6 @@ class Game
   
   def game_process
     start_game
-    
   end
 
 def player_hand(player)
@@ -28,10 +30,15 @@ def dealer_hand(dealer)
 end
 
 def start_game
-  2.times { @player.cards << deck.take_card }
+  @player.cards << @deck.take_card
+  @player.cards << @deck.take_card
   puts "Your cards: #{player_hand(@player)}"
-  2.times { @dealer.cards << deck.take_card }
+  puts "You have #{hand_points(@player.cards)} points"
+  2.times { @dealer.cards << @deck.take_card }
   puts "Dealer's cards: #{dealer_hand(@dealer)}"
 end
 
 end
+
+game = Game.new('Lana')
+game.game_process
