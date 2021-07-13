@@ -43,6 +43,8 @@ def second_round
   
 end
 
+def is_valid?(points)
+  points <=21
 end
 
 game = Game.new('Lana')
