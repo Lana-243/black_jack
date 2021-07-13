@@ -47,14 +47,18 @@ def bank_add(bank)
   @bank += 20
 end
 
-def second_round_player
+def player_turn
+  player_turn! if @player.cards.length <= 3
+end
+
+def player_turn!
   puts 'Press 1 if you want to stand'
   puts 'Press 2 if you want to hit'
   puts 'Press 3 if you want to fold'
   answer = gets.chomp
   case answer
     when '1'
-      
+      dealer_turn
     when '2'
       
     when '3'
@@ -62,14 +66,24 @@ def second_round_player
     else
     #raise error
   end
-end
+  
+  def dealer_turn
+    if hand_points(@dealer.cards) >= 17
+      player_turn
+    else
+      
+    end
+  end
 
-def bust?(points)
-  points <=21
-end
+  def bust?(points)
+    points <=21
+  end
 
-def winner?
-  if hand_points(@player.cards)
+  def winner?
+    if hand_points(@player.cards) > hand_points(@dealer.cards) 
+      
+    end
+  end
 end
 
 game = Game.new('Lana')
