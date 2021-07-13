@@ -11,6 +11,7 @@ class Game
     @deck = Deck.new
     @player = Player.new(player_name)
     @dealer = Dealer.new
+    @bank = 0
   end    
   
   def game_process
@@ -37,17 +38,38 @@ def start_game
   puts "You have #{hand_points(@player.cards)} points"
   2.times { @dealer.cards << @deck.take_card }
   puts "Dealer's cards: #{dealer_hand(@dealer)}"
+  bank_add
 end
 
-def second_round
-  
+def bank_add(bank)
+  @player.money -= 10
+  @dealer.money -= 10
+  @bank += 20
 end
 
-def is_valid?(points)
+def second_round_player
+  puts 'Press 1 if you want to stand'
+  puts 'Press 2 if you want to hit'
+  puts 'Press 3 if you want to fold'
+  answer = gets.chomp
+  case answer
+    when '1'
+      
+    when '2'
+      
+    when '3'
+      
+    else
+    #raise error
+  end
+end
+
+def bust?(points)
   points <=21
 end
 
-def winner
+def winner?
+  if hand_points(@player.cards)
 end
 
 game = Game.new('Lana')
