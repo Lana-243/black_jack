@@ -15,6 +15,7 @@ class Game
   
   def game_process
     start_game
+    second_round
   end
 
 def player_hand(player)
@@ -36,6 +37,10 @@ def start_game
   puts "You have #{hand_points(@player.cards)} points"
   2.times { @dealer.cards << @deck.take_card }
   puts "Dealer's cards: #{dealer_hand(@dealer)}"
+end
+
+def second_round
+  
 end
 
 end
