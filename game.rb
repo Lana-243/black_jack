@@ -47,5 +47,8 @@ def is_valid?(points)
   points <=21
 end
 
+def winner
+end
+
 game = Game.new('Lana')
 game.game_process
