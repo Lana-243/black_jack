@@ -12,6 +12,7 @@ class Game
     @player = Player.new(player_name)
     @dealer = Dealer.new
     @bank = 0
+    @result = nil
   end    
   
   def view_hand(person)
@@ -92,20 +93,43 @@ class Game
     hand_points(person.cards) > 21
   end
   
-  def player_wins?
-      #recheck
-    (bust?(@player) == false) && (hand_points(@player.cards) > hand_points(@dealer.cards))
+  def still_playing?(person)
+    !bust?(person)
   end
   
-  def dealer_wins?
-    (bust?(@dealer) == false) && (hand_points(@dealer.cards) > hand_points(@player.cards))
-  end
-  def draw?
-    (bust?(@dealer) == false) && (hand_points(@dealer.cards) == hand_points(@player.cards))
+  def winner_exists?
+    still_playing?(@player) && still_playing?(@dealer)
   end
   
-  def winner?
-
+  def result?
+    if winner_exists?
+      if hand_points(@player.cards) > hand_points(@dealer.cards)
+        @result = :player_wins
+      elsif hand_points(@player.cards) < hand_points(@dealer.cards)
+        @result = :dealer_wins
+      elsif hand_points(@player.cards) == hand_points(@dealer.cards)
+        @result = :draw
+      end
+    else
+      @result = :no_winner
+    end
+  end
+  
+  def result
+    case @result
+      when :player_wins
+        @player.money += @bank
+        puts 'Player wins!'
+        puts "Player has #{@player.money}$"
+      when :dealer_wins
+        @dealer.money += @bank
+        puts 'Dealer wins!'
+      when :draw
+        puts 'It is a draw!'
+      when :no_winner
+        puts 'There is no winner'
+    end
+    
   end
   
   def money_left?
@@ -134,7 +158,9 @@ class Game
   def player_turn
     if end_game?
       the_end
-    else
+    elsif 
+      #change if two cards already
+      three_cards?(@player) == false
       player_turn!
     end  
   end
@@ -153,11 +179,12 @@ class Game
     puts 'The game is over!'
     player_card_info
     dealer_card_info
+    puts @result
+    result
+    
   end
   
 end
-
-
 
 game = Game.new('Lana')
 game.start_game
