@@ -101,6 +101,11 @@ class Game
     still_playing?(@player) && still_playing?(@dealer)
   end
   
+  def result
+    result?
+    result!
+  end
+  
   def result?
     if winner_exists?
       if hand_points(@player.cards) > hand_points(@dealer.cards)
@@ -115,7 +120,7 @@ class Game
     end
   end
   
-  def result
+  def result!
     case @result
       when :player_wins
         @player.money += @bank
@@ -129,7 +134,6 @@ class Game
       when :no_winner
         puts 'There is no winner'
     end
-    
   end
   
   def money_left?
@@ -179,9 +183,7 @@ class Game
     puts 'The game is over!'
     player_card_info
     dealer_card_info
-    puts @result
     result
-    
   end
   
 end
