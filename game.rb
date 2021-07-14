@@ -45,14 +45,17 @@ class Game
   end
   
   def bank_add
-    #add checks if player has money
     @player.money -= 10
     @dealer.money -= 10
     @bank += 20
   end
   
+  def three_cards?(person)
+    person.cards.length == 3
+  end
+  
   def end_game?
-    (@player.cards.length == 3) && (@player.cards.length == 3)
+    three_cards?(@player) && three_cards?(@dealer)
   end
   
   def player_turn!
@@ -65,7 +68,6 @@ class Game
         dealer_turn
       when '2'
         add_card(@player)
-        player_card_info
         dealer_turn
       when '3'
         the_end
@@ -75,10 +77,14 @@ class Game
   end
   
   def dealer_turn!
+    puts hand_points(@dealer.cards)
     if hand_points(@dealer.cards) >= 17
+      dealer_card_private_info
       player_turn
     else
       add_card(@dealer)
+      dealer_card_private_info
+      player_turn
     end
   end
   
@@ -114,13 +120,12 @@ class Game
   def start_game
     #twice?
     if money_left?
-      add_card(@player)
-      add_card(@player)
+      2.times { add_card(@player) }
       player_card_info
-      add_card(@dealer)
-      add_card(@dealer)
+      2.times { add_card(@dealer) }
       dealer_card_private_info
       bank_add
+      player_turn
     else
       the_end
     end
@@ -137,6 +142,8 @@ class Game
   def dealer_turn
     if end_game?
       the_end
+    elsif three_cards?(@dealer)
+      player_turn
     else
       dealer_turn!
     end
@@ -152,6 +159,5 @@ end
 
 
 
-
 game = Game.new('Lana')
-game.game_process
+game.start_game

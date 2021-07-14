@@ -1,6 +1,6 @@
 class Dealer
   
-  attr_reader :money, :cards
+  attr_accessor :money, :cards
   
   def initialize
     @money = 100

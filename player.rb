@@ -1,6 +1,7 @@
 class Player
   
-  attr_reader :name, :money, :cards
+  attr_reader :name
+  attr_accessor :money, :cards
   
   def initialize(name)
     @name = name
@@ -8,6 +9,4 @@ class Player
     @cards = []
   end
   
-  def money
-  end
 end
