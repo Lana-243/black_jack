@@ -33,6 +33,22 @@ class Game
     puts "Dealer's cards: #{dealer_private_info}"
   end
   
+  def player_money_info
+    puts "You have #{@player.money}$ in your pocket"
+  end
+  
+  def dealer_money_info
+    puts "Dealer #{@dealer.money}$ in their pocket"
+  end
+  
+  def line
+    puts "."*15
+  end
+  
+  def two_lines
+    puts "-"*15
+  end
+  
   def dealer_private_info
     dealer_hand_private = []
     @dealer.cards.each do |card|
@@ -60,6 +76,7 @@ class Game
   end
   
   def player_turn!
+    two_lines
     puts 'Press 1 if you want to stand'
     puts 'Press 2 if you want to hit'
     puts 'Press 3 if you want to finish'
@@ -78,12 +95,14 @@ class Game
   end
   
   def dealer_turn!
-    puts hand_points(@dealer.cards)
+    line
     if hand_points(@dealer.cards) >= 17
+      player_card_info
       dealer_card_private_info
       player_turn
     else
       add_card(@dealer)
+      player_card_info
       dealer_card_private_info
       player_turn
     end
@@ -107,11 +126,13 @@ class Game
   end
   
   def player_wins?
-    ((hand_points(@player.cards) > hand_points(@dealer.cards)) && still_playing?(@player)) || bust?(@dealer)
+    ((hand_points(@player.cards) > hand_points(@dealer.cards)) && 
+    still_playing?(@player)) || bust?(@dealer)
   end
   
   def dealer_wins?
-    ((hand_points(@dealer.cards) > hand_points(@player.cards)) && still_playing?(@dealer)) || bust?(@player)
+    ((hand_points(@dealer.cards) > hand_points(@player.cards)) && 
+    still_playing?(@dealer)) || bust?(@player)
   end
   
   def draw?
@@ -136,20 +157,16 @@ class Game
     case @result
       when :player_wins
         @player.money += @bank
-        puts 'Player wins!'
-        puts "Player has #{@player.money}$"
+        puts 'You win!'
       when :dealer_wins
         @dealer.money += @bank
         puts 'Dealer wins!'
-        puts "Player has #{@player.money}$"
       when :draw
         @player.money += 10
         @dealer.money += 10
         puts 'It is a draw!'
-        puts "Player has #{@player.money}$"
       when :no_winner
         puts 'There is no winner'
-        puts "Player has #{@player.money}$"
     end
   end
   
@@ -163,10 +180,10 @@ class Game
   end
 
   def start_game
-    #twice?
     if money_left?
       2.times { add_card(@player) }
       player_card_info
+      line
       2.times { add_card(@dealer) }
       dealer_card_private_info
       bank_add
@@ -195,10 +212,18 @@ class Game
   end  
   
   def the_end
-    puts 'The game is over!'
+    line
+    puts "Game is over!\n"
+    line
     player_card_info
+    line
     dealer_card_info
+    line
     result
+    line
+    player_money_info
+    line
+    dealer_money_info
   end
   
 end
