@@ -2,11 +2,22 @@ require_relative 'dealer'
 require_relative 'deck'
 require_relative 'points'
 require_relative 'player'
+require_relative 'validation'
+require_relative 'decorations'
 
 class Game
   
   include Points
+  include Validation
+  include Decorations
   
+  attr_accessor :deck, :player, :dealer, :bank, :result, :answer
+  
+  ANSWER_FORMAT = [123]
+  
+  validate :answer, :presence
+  validate :answer, :format, ANSWER_FORMAT
+
   def initialize(player_name)
     @deck = Deck.new
     @player = Player.new(player_name)
@@ -38,15 +49,7 @@ class Game
   end
   
   def dealer_money_info
-    puts "Dealer #{@dealer.money}$ in their pocket"
-  end
-  
-  def line
-    puts "."*15
-  end
-  
-  def two_lines
-    puts "-"*15
+    puts "Dealer has #{@dealer.money}$ in their pocket"
   end
   
   def dealer_private_info
@@ -80,8 +83,9 @@ class Game
     puts 'Press 1 if you want to stand'
     puts 'Press 2 if you want to hit'
     puts 'Press 3 if you want to finish'
-    answer = gets.chomp
-    case answer
+    @answer = gets.chomp
+    validate!
+    case @answer
       when '1'
         dealer_turn
       when '2'
@@ -89,8 +93,6 @@ class Game
         dealer_turn
       when '3'
         the_end
-      else
-      #raise error
     end
   end
   
@@ -213,7 +215,7 @@ class Game
   
   def the_end
     line
-    puts "Game is over!\n"
+    puts "Round is over!"
     line
     player_card_info
     line
@@ -226,7 +228,9 @@ class Game
     dealer_money_info
   end
   
+  def finish_game
+    player_money_info
+  end
+  
 end
 
-game = Game.new('Lana')
-game.start_game
