@@ -1,7 +1,8 @@
 class Deck
   attr_reader :cards
   SUITS = %w(♠ ♥ ♣ ♦)
-  RANKS = %w(2 3 4 5 6 7 8 9 10 a k q j)
+  # RANKS = %w(2 3 4 5 6 7 8 9 10 a k q j)
+  RANKS = %w(a a a k q j)
   
   def initialize
     @cards = RANKS.product(SUITS)

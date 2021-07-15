@@ -6,7 +6,7 @@ require_relative 'player'
 class Game
   
   include Points
-    
+  
   def initialize(player_name)
     @deck = Deck.new
     @player = Player.new(player_name)
@@ -36,7 +36,7 @@ class Game
   def dealer_private_info
     dealer_hand_private = []
     @dealer.cards.each do |card|
-      dealer_hand_private << card.gsub(/./, "*")
+      dealer_hand_private << "**"
     end
      dealer_hand_private.join(', ')
   end
@@ -98,7 +98,7 @@ class Game
   end
   
   def winner_exists?
-    still_playing?(@player) && still_playing?(@dealer)
+    still_playing?(@player) || still_playing?(@dealer)
   end
   
   def result
@@ -106,13 +106,25 @@ class Game
     result!
   end
   
+  def player_wins?
+    ((hand_points(@player.cards) > hand_points(@dealer.cards)) && still_playing?(@player)) || bust?(@dealer)
+  end
+  
+  def dealer_wins?
+    ((hand_points(@dealer.cards) > hand_points(@player.cards)) && still_playing?(@dealer)) || bust?(@player)
+  end
+  
+  def draw?
+    hand_points(@player.cards) == hand_points(@dealer.cards)
+  end
+  
   def result?
     if winner_exists?
-      if hand_points(@player.cards) > hand_points(@dealer.cards)
+      if player_wins?
         @result = :player_wins
-      elsif hand_points(@player.cards) < hand_points(@dealer.cards)
+      elsif dealer_wins?
         @result = :dealer_wins
-      elsif hand_points(@player.cards) == hand_points(@dealer.cards)
+      elsif draw?
         @result = :draw
       end
     else
@@ -129,10 +141,15 @@ class Game
       when :dealer_wins
         @dealer.money += @bank
         puts 'Dealer wins!'
+        puts "Player has #{@player.money}$"
       when :draw
+        @player.money += 10
+        @dealer.money += 10
         puts 'It is a draw!'
+        puts "Player has #{@player.money}$"
       when :no_winner
         puts 'There is no winner'
+        puts "Player has #{@player.money}$"
     end
   end
   
@@ -160,11 +177,9 @@ class Game
   end
   
   def player_turn
-    if end_game?
+    if end_game? || three_cards?(@player)
       the_end
-    elsif 
-      #change if two cards already
-      three_cards?(@player) == false
+    else
       player_turn!
     end  
   end
