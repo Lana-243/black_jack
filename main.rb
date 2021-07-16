@@ -20,7 +20,7 @@ loop do
   if (answer == 'Y') || (answer == 'y')
     game.start_game
   else
-    puts "The game is over"
+    puts 'The game is over'
     puts "#{name}, thank you for the game!"
     game.finish_game
     break

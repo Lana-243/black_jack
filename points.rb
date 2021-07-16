@@ -1,14 +1,13 @@
 module Points
-  
   attr_accessor
-  
+
   NUMBERS = %w(2 3 4 5 6 7 8 9)
   FACES = %w(k q j)
   ACE = 'a'
   ACE_V1 = -1
   ACE_V2 = 11
   WIN = 21
-  
+
   def hand_points(hand)
     @count = 0
     @aces = 0
@@ -21,36 +20,36 @@ module Points
         @aces += 1
       end
     end
-      
+
     case @aces
-      when 1
-        one_ace
-      when 2
-        two_aces
-      when 3
-        three_aces
+    when 1
+      one_ace
+    when 2
+      two_aces
+    when 3
+      three_aces
     end
     @count
   end
 
   def one_ace
     if (@count + ACE_V2) > WIN
-        @count -= 1
+      @count -= 1
     else
-        @count += 10
+      @count += 10
     end
   end
-  
+
   def two_aces
     if (@count + ACE_V2 + ACE_V2) <= WIN
-        @count += ACE_V2*2
+      @count += ACE_V2 * 2
     elsif (@count + ACE_V1 + ACE_V2) <= WIN
-        @count += ACE_V1 + ACE_V2
-    else 
-        @count += ACE_V1*2
+      @count += ACE_V1 + ACE_V2
+    else
+      @count += ACE_V1 * 2
     end
   end
-  
+
   def three_aces
     @count = ACE_V2 + ACE_V2 + ACE_V1
   end

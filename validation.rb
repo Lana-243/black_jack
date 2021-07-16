@@ -1,12 +1,12 @@
 module Validation
   def self.included(base)
     base.extend ClassMethods
-    base.send :include, InstanceMethods 
+    base.send :include, InstanceMethods
   end
 
   module ClassMethods
-     attr_accessor :validations
-     
+    attr_accessor :validations
+
     def validate(attribute, type_validation, arg = nil)
       @validations ||= {}
       @validations[attribute] ||= []
@@ -15,7 +15,6 @@ module Validation
   end
 
   module InstanceMethods
-    
     def validate!
       self.class.instance_variable_get(:@validations).each do |attr_name, validations|
         validations.each { |v| send("validate_#{v[0]}", attr_name, *v[1]) }

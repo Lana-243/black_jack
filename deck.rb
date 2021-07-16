@@ -8,13 +8,12 @@ class Deck
     @cards = @cards.map{ |card| card = [card[0] + card[1]] }.flatten
     self.shuffle
   end
-  
+
   def shuffle
     @cards.shuffle!
   end
-  
+
   def take_card
     @cards.shift
   end
-  
 end
