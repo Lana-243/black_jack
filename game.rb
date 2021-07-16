@@ -173,7 +173,7 @@ class Game
   end
   
   def money_left?
-    (@player.money) >= 10 && (@dealer.money >= 10)
+    (@player.money >= 10) && (@dealer.money >= 10)
   end
   
   def game_process

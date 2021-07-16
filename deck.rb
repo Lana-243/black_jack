@@ -17,5 +17,4 @@ class Deck
     @cards.shift
   end
   
-  
 end
