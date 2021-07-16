@@ -13,10 +13,7 @@ class Game
   
   attr_accessor :deck, :player, :dealer, :bank, :result, :answer
   
-  ANSWER_FORMAT = [123]
-  
   validate :answer, :presence
-  validate :answer, :format, ANSWER_FORMAT
 
   def initialize(player_name)
     @deck = Deck.new
@@ -183,10 +180,13 @@ class Game
 
   def start_game
     if money_left?
+      @player.cards = []
+      @dealer.cards = []
       2.times { add_card(@player) }
+      2.times { add_card(@dealer) }
+      line
       player_card_info
       line
-      2.times { add_card(@dealer) }
       dealer_card_private_info
       bank_add
       player_turn
