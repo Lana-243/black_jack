@@ -1,9 +1,9 @@
 module Points
   attr_accessor
 
-  NUMBERS = %w(2 3 4 5 6 7 8 9)
-  FACES = %w(k q j)
-  ACE = 'a'
+  NUMBERS = %w[2 3 4 5 6 7 8 9].freeze
+  FACES = %w[k q j].freeze
+  ACE = 'a'.freeze
   ACE_V1 = -1
   ACE_V2 = 11
   WIN = 21
@@ -16,7 +16,7 @@ module Points
         @count += card[0].to_i
       elsif (card.length == 3) || (FACES.include? card[0])
         @count += 10
-      elsif card[0] = ACE
+      elsif card[0] == ACE
         @aces += 1
       end
     end
@@ -41,13 +41,14 @@ module Points
   end
 
   def two_aces
-    if (@count + ACE_V2 + ACE_V2) <= WIN
-      @count += ACE_V2 * 2
-    elsif (@count + ACE_V1 + ACE_V2) <= WIN
-      @count += ACE_V1 + ACE_V2
-    else
-      @count += ACE_V1 * 2
-    end
+    @count +=
+      if (@count + ACE_V2 + ACE_V2) <= WIN
+        ACE_V2 * 2
+      elsif (@count + ACE_V1 + ACE_V2) <= WIN
+        ACE_V1 + ACE_V2
+      else
+        ACE_V1 * 2
+      end
   end
 
   def three_aces

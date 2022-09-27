@@ -5,7 +5,7 @@ class Deck
 
   def initialize
     @cards = RANKS.product(SUITS)
-    @cards = @cards.map{ |card| card = [card[0] + card[1]] }.flatten
+    @cards = @cards.map{ |card| [card[0] + card[1]] }.flatten
     self.shuffle
   end
 

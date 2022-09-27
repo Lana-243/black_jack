@@ -50,10 +50,10 @@ class Game
 
   def dealer_private_info
     dealer_hand_private = []
-    @dealer.cards.each do |card|
+    @dealer.cards.each do
       dealer_hand_private << '**'
     end
-     dealer_hand_private.join(', ')
+    dealer_hand_private.join(', ')
   end
 
   def add_card(person)
@@ -86,7 +86,7 @@ class Game
       dealer_turn
     when '2'
       add_card(@player)
-        dealer_turn
+      dealer_turn
     when '3'
       the_end
     end
@@ -94,16 +94,10 @@ class Game
 
   def dealer_turn!
     line
-    if hand_points(@dealer.cards) >= 17
-      player_card_info
-      dealer_card_private_info
-      player_turn
-    else
-      add_card(@dealer)
-      player_card_info
-      dealer_card_private_info
-      player_turn
-    end
+    add_card(@dealer) if hand_points(@dealer.cards) >= 17
+    player_card_info
+    dealer_card_private_info
+    player_turn
   end
 
   def bust?(person)
@@ -118,7 +112,7 @@ class Game
     still_playing?(@player) || still_playing?(@dealer)
   end
 
-  def result
+  def game_result
     result?
     result!
   end
@@ -155,14 +149,14 @@ class Game
     case @result
     when :player_wins
       @player.money += @bank
-        puts 'You win!'
+      puts 'You win!'
     when :dealer_wins
       @dealer.money += @bank
-        puts 'Dealer wins!'
+      puts 'Dealer wins!'
     when :draw
       @player.money += 10
-        @dealer.money += 10
-        puts 'It is a draw!'
+      @dealer.money += 10
+      puts 'It is a draw!'
     when :no_winner
       puts 'There is no winner'
     end
@@ -220,7 +214,7 @@ class Game
     line
     dealer_card_info
     line
-    result
+    game_result
     line
     player_money_info
     line
